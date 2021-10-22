@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import rpgcreature.Braver;
+import rpgcreature.Golem;
 import rpgcreature.Slime;
 import rpgcreature.Wizard;
 import rpgcreature.MetalSlime;
@@ -46,6 +47,7 @@ public class RPGMain {
 
         //メインループ（無限ループ）
         while(true){
+            turn();
             //現在の状態を表示
             dispStatus();
             //入力されたコマンドを取得
@@ -55,9 +57,11 @@ public class RPGMain {
                 if( !battle() ){
                     break;
                 }
-            }else{
+            }else if(command == COMMAND_RECOVERY){
                 //回復する
                 braver.recovery();
+            }else{
+                System.out.println("1又は2を入力してください");
             }
         }
 
@@ -83,6 +87,14 @@ public class RPGMain {
     }
 
     /**
+     * ターン数表示
+     */
+    int turn = 0;
+    private void turn(){
+        turn +=1;
+        System.out.printf("====%dターン目====\n",turn);
+    }
+    /**
      * 現在の状態を表示する
      */
     private void dispStatus(){
@@ -101,13 +113,15 @@ public class RPGMain {
         monsters = new Monster[MONSTER_NUM];
         for(int i=0; i < MONSTER_NUM; i++){
             //乱数を取得してモンスターを決定する
-            int value = r.nextInt(3);
+            int value = r.nextInt(4);
             if( value == 0 ){
                 monsters[i] = new Slime();
             }else if( value == 1){
                 monsters[i] = new Wizard();
-            }else{
+            }else if( value == 2){
                 monsters[i] = new MetalSlime();
+            }else{
+                monsters[i] = new Golem();
             }
         }
         
